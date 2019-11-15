@@ -27,21 +27,25 @@ app.use(function validateBearerToken(req, res, next) {
 
 function handleGetMovies(req, res) {
     //search for movies by genre, country, or avg_vote, query string parameters
+    let response = movies
     if (req.query.genre) {
-        movies = movies.filter(movie => movie.genre.toLowerCase().includes(req.query.genre.toLowerCase()))
+        response = response.filter(movie => movie.genre.toLowerCase().includes(req.query.genre.toLowerCase()))
     }
 
     if (req.query.country) {
-        movies = movies.filter(movie => movie.country.toLowerCase().includes(req.query.country.toLowerCase()))
+        response = response.filter(movie => movie.country.toLowerCase().includes(req.query.country.toLowerCase()))
     }
 
     if (res.query.avg_vote) {
-        
+        response = response.filter(movie => {
+            Number(movie.avg_vote) >= Number(req.query.avg_vote)
+        })
     }
+    
 
-    res.json(movies)
+    res.json(response)
 }
 
 app.get('/movie', handleGetMovies)
 
-app.listen(8000, () => console.log('server listening at http://localhost:8000'))
+app.listen(8000, () => {console.log('server listening at http://localhost:8000')})
