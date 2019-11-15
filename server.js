@@ -36,7 +36,7 @@ function handleGetMovies(req, res) {
         response = response.filter(movie => movie.country.toLowerCase().includes(req.query.country.toLowerCase()))
     }
 
-    if (res.query.avg_vote) {
+    if (req.query.avg_vote) {
         response = response.filter(movie => {
             Number(movie.avg_vote) >= Number(req.query.avg_vote)
         })
